@@ -37,12 +37,14 @@ on boot
     setprop ro.config.vc_call_vol_steps 15
 
 on fs
+    mkdir /mnt/bada_user
+    chmod 0777 /mnt/bada_user
+    mount vfat /dev/block/mmcblk0p2 /mnt/bada_user noatime
     mkdir /system
     mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
     mkdir /config 0500 root root
     mount ext4 /dev/block/mmcblk0p2 /system noatime noauto_da_alloc discard journal_async_commit nodiratime data=writeback barrier=0 nobh nomblk_io_submit
-    mount ext4 /dev/block/mmcblk0p1 /cache noatime noauto_da_alloc discard journal_async_commit nodiratime data=writeback barrier=0 nobh nomblk_io_submit
+   mount ext4 loop@/mnt/bada_user/cache.img /cache noatime noauto_da_alloc discard journal_async_commit nodiratime data=writeback barrier=0 nobh nomblk_io_submit
     mount ext4 /dev/block/mmcblk0p3 /data noatime noauto_da_alloc discard journal_async_commit nodiratime data=writeback barrier=0 nobh nomblk_io_submit
     mount_all fstab.wave
     swapon_all fstab.wave
